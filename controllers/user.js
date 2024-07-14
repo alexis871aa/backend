@@ -11,7 +11,8 @@ async function register(login, password) {
 
 	const passwordHash = await bcrypt.hash(password, 10);
 
-	const user = await User.create({ login, password: passwordHash });
+	const user = User.create({ login, password: passwordHash });
+
 	const token = generate({ id: user.id });
 
 	return {
@@ -65,16 +66,16 @@ function getRoles() {
 	];
 }
 
-// delete user
-async function deleteUser(id) {
-	return await User.deleteOne({ _id: id });
-}
-
 // edit (roles)
-async function editUser(id, userData) {
+async function updateUser(id, userData) {
 	return await User.findByIdAndUpdate({ _id: id }, userData, {
 		returnDocument: 'after',
 	});
+}
+
+// delete user
+function deleteUser(id) {
+	return User.deleteOne({ _id: id });
 }
 
 module.exports = {
@@ -82,6 +83,6 @@ module.exports = {
 	login,
 	getUsers,
 	getRoles,
+	updateUser,
 	deleteUser,
-	editUser,
 };

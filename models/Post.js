@@ -11,7 +11,8 @@ const PostSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 			validate: {
-				validator: validator.isURL(),
+				validator: (value) =>
+					validator.isURL(value, { protocols: ['http', 'https', 'ftp'] }),
 				message: 'Image should be a valid URL!',
 			},
 		},
